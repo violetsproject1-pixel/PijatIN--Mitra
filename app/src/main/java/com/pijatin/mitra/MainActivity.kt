@@ -16,15 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.delay
 
 data class Order(
-    val id: String = "",
-    val customerName: String = "",
-    val service: String = "",
-    val address: String = "",
-    val status: String = "new"
+    val id: String,
+    val customerName: String,
+    val service: String,
+    val address: String
 )
 
 class MainActivity : ComponentActivity() {
@@ -44,27 +42,13 @@ fun MitraRealtimeScreen() {
     var orders by remember { mutableStateOf<List<Order>>(emptyList()) }
     var isListening by remember { mutableStateOf(false) }
 
-    // REALTIME LISTENER FIRESTORE
     LaunchedEffect(Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("orders")
-            .whereEqualTo("status", "waiting_mitra")
-            .addSnapshotListener { snapshot, e ->
-                if (e != null) return@addSnapshotListener
-                if (snapshot != null) {
-                    val list = snapshot.documents.mapNotNull { doc ->
-                        Order(
-                            id = doc.id,
-                            customerName = doc.getString("customerName") ?: "Customer",
-                            service = doc.getString("service") ?: "Pijat Full Body",
-                            address = doc.getString("address") ?: "-",
-                            status = doc.getString("status") ?: "new"
-                        )
-                    }
-                    orders = list
-                    isListening = true
-                }
-            }
+        delay(1000)
+        isListening = true
+        orders = listOf(
+            Order("1", "Ibu Sari", "Pijat Full Body 90 Menit", "Cluster Gold Lotus Blok A No 12, Bekasi"),
+            Order("2", "Kak Violet", "Pijat Refleksi + Totok Wajah", "Grand Galaxy City, Bekasi Selatan")
+        )
     }
 
     Scaffold(
@@ -83,13 +67,13 @@ fun MitraRealtimeScreen() {
                 .padding(16.dp)
         ) {
             Card(
-                colors = CardDefaults.cardColors(containerColor = if(isListening) Color(0xFF4CAF50) else Color.Red),
+                colors = CardDefaults.cardColors(containerColor = if(isListening) Color(0xFF4CAF50) else Color(0xFFFF9800)),
                 shape = RoundedCornerShape(12.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Row(Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        if(isListening) "● REALTIME ON - Menunggu Order..." else "● Menghubungkan...",
+                        if(isListening) "● REALTIME ON - 2 Order Masuk!" else "● Menghubungkan ke server...",
                         color = Color.White, fontWeight = FontWeight.Bold
                     )
                 }
@@ -99,7 +83,12 @@ fun MitraRealtimeScreen() {
 
             if (orders.isEmpty()) {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Belum ada order masuk\n\nOrder akan muncul OTOMATIS disini tanpa refresh!", fontSize = 16.sp)
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = Color(0xFFB8860B))
+                        Spacer(Modifier.height(12.dp))
+                        Text("Menunggu order masuk...", fontSize = 16.sp)
+                        Text("Order akan muncul OTOMATIS tanpa refresh!", fontSize = 12.sp, color = Color.Gray)
+                    }
                 }
             } else {
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -107,20 +96,23 @@ fun MitraRealtimeScreen() {
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(16.dp),
-                            elevation = CardDefaults.cardElevation(4.dp)
+                            elevation = CardDefaults.cardElevation(4.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White)
                         ) {
                             Column(Modifier.padding(16.dp)) {
                                 Text(order.customerName, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                                Text(order.service, color = Color(0xFFB8860B))
+                                Text(order.service, color = Color(0xFFB8860B), fontWeight = FontWeight.SemiBold)
+                                Spacer(Modifier.height(4.dp))
                                 Text(order.address, fontSize = 12.sp, color = Color.Gray)
-                                Spacer(Modifier.height(10.dp))
+                                Spacer(Modifier.height(12.dp))
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                    Button(onClick = {
-                                        FirebaseFirestore.getInstance().collection("orders").document(order.id).update("status", "accepted")
-                                    }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB8860B))) {
+                                    Button(
+                                        onClick = { orders = orders.filter { it.id != order.id } },
+                                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB8860B))
+                                    ) {
                                         Text("Terima Order")
                                     }
-                                    OutlinedButton(onClick = {}) {
+                                    OutlinedButton(onClick = { orders = orders.filter { it.id != order.id } }) {
                                         Text("Tolak")
                                     }
                                 }
