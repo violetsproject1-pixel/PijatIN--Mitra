@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PijatIN MITRA</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Segoe UI,sans-serif}
+:root{--gold:#C8A95B;--green:#2D4A3E;--dark:#1A3329}
+body{background:#F7F3E8;overflow:hidden}
+/* SPLASH */
+#splash{position:fixed;inset:0;background:linear-gradient(135deg,#2D4A3E,#1A3329);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s}
+.splash-logo{width:110px;height:110px;background:#C8A95B;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:60px;animation:float 2s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.splash-title{color:#C8A95B;font-size:26px;font-weight:800;margin-top:16px}
+.loader{width:110px;height:4px;background:rgba(200,169,91,.3);border-radius:10px;margin-top:24px;overflow:hidden}
+.loader-bar{height:100%;width:0%;background:#C8A95B;border-radius:10px;animation:load 2s forwards}
+@keyframes load{to{width:100%}}
+/* AUTH MITRA */
+#auth{position:fixed;inset:0;background:#F7F3E8;display:none;flex-direction:column;padding:22px;z-index:100;overflow:auto}
+.form{background:white;border-radius:20px;padding:20px;margin-top:20px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.input{width:100%;padding:13px 14px;border:1.5px solid #E2D9BF;border-radius:12px;margin-top:10px}
+.btn{width:100%;padding:14px;background:var(--green);color:white;border:none;border-radius:12px;font-weight:800;margin-top:16px;cursor:pointer}
+/* MAIN */
+#main{display:none;height:100vh;flex-direction:column}
+.header{background:var(--green);color:white;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.avatar{width:38px;height:38px;background:#C8A95B;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#1A3329}
+.tabs{display:flex;background:white;border-bottom:1px solid #E8E0C8}
+.tab{flex:1;padding:12px;text-align:center;font-weight:700;cursor:pointer;color:#8A7D68;border-bottom:3px solid transparent}
+.tab.active{color:var(--green);border-color:var(--green)}
+.content{flex:1;overflow-y:auto;padding:12px}
+.card{background:white;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.order-head{display:flex;justify-content:space-between;align-items:center}
+.badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.b-new{background:#FFF0C0;color:#8B6A00}
+.b-process{background:#D6F5DD;color:#1B8A3A}
+.chat-box{height:260px;overflow-y:auto;background:#FBF7EB;border:1px solid #E8DFC8;border-radius:12px;padding:10px;margin-top:10px}
+.msg{max-width:80%;padding:8px 12px;border-radius:14px;margin:6px 0;font-size:13px}
+.msg-me{background:var(--green);color:white;margin-left:auto;border-bottom-right-radius:4px}
+.msg-you{background:white;border:1px solid #E8DFC8;border-bottom-left-radius:4px}
+.chat-input{display:flex;gap:8px;margin-top:8px}
+.chat-input input{flex:1;padding:10px 12px;border-radius:20px;border:1.5px solid #E2D9BF}
+.send{width:40px;height:40px;background:var(--green);color:white;border:none;border-radius:50%;font-size:18px}
+.gold{background:linear-gradient(135deg,#C8A95B,#8B5E2B);color:white;border:none;padding:8px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+.outline{background:white;border:1.5px solid var(--green);color:var(--green);padding:8px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div id="splash">
+  <div class="splash-logo">🛵</div>
+  <div class="splash-title">PijatIN MITRA</div>
+  <div style="color:rgba(200,169,91,.8);font-size:12px;margin-top:4px">Gold Lotus Spa - Partner</div>
+  <div class="loader"><div class="loader-bar"></div></div>
+</div>
+
+<div id="auth">
+  <div style="text-align:center;margin-top:30px"><div style="width:80px;height:80px;background:var(--green);border-radius:24px;display:inline-flex;align-items:center;justify-content:center;font-size:40px">🛵</div><h2 style="color:var(--green);margin-top:12px">Login Mitra</h2><p style="color:#8A7D68;font-size:13px">Kelola order & chat customer</p></div>
+  <div class="form">
+    <input class="input" id="mitraName" placeholder="Nama Mitra" value="Sari - SR">
+    <input class="input" id="mitraHp" placeholder="No HP" value="0812-9988-7766">
+    <input class="input" id="mitraMotor" placeholder="Plat Motor" value="B 3421 UJK">
+    <input class="input" placeholder="Password" type="password" value="mitra123">
+    <button class="btn" onclick="doLoginMitra()">Masuk Sebagai Mitra</button>
+    <p style="text-align:center;font-size:12px;color:#8A7D68;margin-top:10px">Motor 🛵 SR 0.3km - 342 job - Rating 4.9⭐</p>
+  </div>
+</div>
+
+<div id="main">
+  <div class="header">
+    <div style="display:flex;gap:10px;align-items:center"><span style="font-size:24px">🪷</span><div><b id="hName">Sari - SR</b><div style="font-size:11px;opacity:.8">🛵 B 3421 UJK • Online</div></div></div>
+    <div style="display:flex;gap:8px"><div class="avatar" id="avM">S</div><div style="font-size:12px" onclick="doLogout()">🚪 Logout</div></div>
+  </div>
+  <div class="tabs">
+    <div class="tab active" id="tOrder" onclick="switchTab('order')">Order Masuk (3)</div>
+    <div class="tab" id="tChat" onclick="switchTab('chat')">Chat</div>
+    <div class="tab" id="tRiwayat" onclick="switchTab('riwayat')">Riwayat</div>
+  </div>
+  <div class="content">
+    <div id="page-order">
+      <div class="card" id="order1">
+        <div class="order-head"><b>🛵 Order #PIJ-2026-001</b><span class="badge b-new">BARU</span></div>
+        <div style="font-size:13px;margin-top:8px;color:#5A4F3E">Customer: <b>Violet</b> • Rp 75.000<br>Layanan: Pijat Tradisional 90K<br>Alamat: Jl. Pijat No.1, Tangerang - 0.3km<br>Waktu: Hari ini 19:00</div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="gold" onclick="terimaOrder('order1')">✅ Terima</button><button class="outline" onclick="tolakOrder('order1')">❌ Tolak</button><button class="gold" style="background:#2D4A3E" onclick="openChat('Violet')">💬 Chat</button></div>
+        <div class="chat-box hidden" id="chat-order1"><div class="msg msg-you">Violet: Kak, bisa jam 7 malam ya?</div><div class="msg msg-me">Sari: Bisa kak, OTW 0.3km 🛵</div></div>
+      </div>
+      <div class="card">
+        <div class="order-head"><b>🛵 Order #PIJ-2026-002</b><span class="badge b-process">PROSES</span></div>
+        <div style="font-size:13px;margin-top:8px;color:#5A4F3E">Customer: <b>Rani</b> • Rp 150.000<br>Full Body Massage<br>0.8km - Menuju lokasi</div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="gold" onclick="alert('Status: Menuju lokasi!')">📍 Lacak</button><button class="outline" onclick="openChat('Rani')">💬 Chat</button></div>
+      </div>
+      <div class="card" style="opacity:.6">
+        <div class="order-head"><b>🛵 Order #PIJ-2026-000</b><span class="badge" style="background:#E0E0E0">SELESAI</span></div>
+        <div style="font-size:13px;margin-top:8px">Customer: Budi • Rp 90.000 • Selesai ✅ Rating 5⭐</div>
+      </div>
+    </div>
+
+    <div id="page-chat" class="hidden">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center"><b>💬 Chat Order-orderan</b><span style="font-size:11px;color:#1B8A3A">● 2 online</span></div>
+        <div style="margin-top:10px">
+          <div class="card" style="margin:0 0 8px;padding:10px;display:flex;gap:10px;align-items:center;cursor:pointer" onclick="selectChat('Violet')"><div class="avatar" style="background:#C8A95B">V</div><div><b>Violet</b><div style="font-size:12px;color:#6B5E4A">Kak, bisa jam 7 malam ya? • 18:50</div></div><div style="margin-left:auto;background:#E53E3E;color:white;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">1</div></div>
+          <div class="card" style="margin:0;padding:10px;display:flex;gap:10px;align-items:center;cursor:pointer" onclick="selectChat('Rani')"><div class="avatar" style="background:#8B5E2B">R</div><div><b>Rani</b><div style="font-size:12px;color:#6B5E4A">Oke kak ditunggu 🛵 • 18:45</div></div></div>
+        </div>
+        <div id="chatArea" style="margin-top:12px">
+          <div style="text-align:center;padding:20px;color:#8A7D68">Pilih chat di atas untuk mulai ngobrol</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-riwayat" class="hidden">
+      <div class="card"><b>Riwayat Mitra - 342 Job</b><p style="font-size:13px;margin-top:6px">Hari ini: 3 order • Rp 315.000<br>Rating 4.9⭐ • Motor SR B 3421 UJK</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentChat='Violet';
+function switchTab(t){
+  document.querySelectorAll('.tab').forEach(e=>e.classList.remove('active'));
+  document.getElementById('t'+t.charAt(0).toUpperCase()+t.slice(1)).classList.add('active');
+  document.getElementById('page-order').classList.toggle('hidden', t!=='order');
+  document.getElementById('page-chat').classList.toggle('hidden', t!=='chat');
+  document.getElementById('page-riwayat').classList.toggle('hidden', t!=='riwayat');
+}
+function doLoginMitra(){
+  localStorage.setItem('mitra_login','true');
+  let name=document.getElementById('mitraName').value||'Sari - SR';
+  localStorage.setItem('mitra_name', name);
+  showMain();
+}
+function showMain(){
+  document.getElementById('auth').style.display='none';
+  document.getElementById('main').style.display='flex';
+  let n=localStorage.getItem('mitra_name')||'Sari - SR';
+  document.getElementById('hName').innerText=n;
+  document.getElementById('avM').innerText=n.charAt(0);
+}
+function doLogout(){
+  if(confirm('Logout Mitra? Balik ke Login Mitra?')){
+    localStorage.removeItem('mitra_login');
+    document.getElementById('main').style.display='none';
+    document.getElementById('auth').style.display='flex';
+  }
+}
+function terimaOrder(id){
+  alert('Order diterima! Chat customer sekarang 🛵');
+  document.querySelector('#'+id+' .badge').innerText='PROSES';
+  document.querySelector('#'+id+' .badge').className='badge b-process';
+  switchTab('chat');
+}
+function tolakOrder(id){ document.getElementById(id).style.opacity='.4'; }
+function openChat(name){ switchTab('chat'); selectChat(name); }
+function selectChat(name){
+  currentChat=name;
+  let html=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div class="avatar">${name[0]}</div><b>${name}</b><span style="font-size:11px;color:#1B8A3A">● Online</span></div><div class="chat-box" id="activeChat"><div class="msg msg-you">${name}: Kak, bisa jam 7 malam ya?</div><div class="msg msg-me">Sari: Bisa kak, OTW 0.3km 🛵 2 menit</div><div class="msg msg-you">${name}: Oke, alamat Jl. Pijat No.1 ya</div></div><div class="chat-input"><input id="chatInput" placeholder="Ketik pesan..." onkeypress="if(event.key==='Enter') sendMsg()"><button class="send" onclick="sendMsg()">➤</button></div>`;
+  document.getElementById('chatArea').innerHTML=html;
+}
+function sendMsg(){
+  let inp=document.getElementById('chatInput'); let txt=inp.value.trim(); if(!txt) return;
+  let box=document.getElementById('activeChat'); let div=document.createElement('div'); div.className='msg msg-me'; div.innerText='Sari: '+txt; box.appendChild(div); inp.value=''; box.scrollTop=box.scrollHeight;
+  setTimeout(()=>{ let r=document.createElement('div'); r.className='msg msg-you'; r.innerText=currentChat+': Oke kak siap ditunggu 🙏'; box.appendChild(r); box.scrollTop=box.scrollHeight; },1000);
+}
+window.onload=()=>{
+  setTimeout(()=>{
+    document.getElementById('splash').style.opacity='0';
+    setTimeout(()=>{
+      document.getElementById('splash').style.display='none';
+      if(localStorage.getItem('mitra_login')==='true') showMain(); else document.getElementById('auth').style.display='flex';
+    },500);
+  },2000);
+}
+</script>
+</body>
+</html>
