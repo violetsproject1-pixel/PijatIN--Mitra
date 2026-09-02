@@ -1,1 +1,4 @@
-<resources><style name="Theme.PijatIN" parent="Theme.MaterialComponents.DayNight.NoActionBar"></style></resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.PijatINMitra" parent="@android:style/Theme.NoTitleBar" />
+</resources>
