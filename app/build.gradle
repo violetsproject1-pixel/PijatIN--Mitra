@@ -1,15 +1,14 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.1.0'
-    }
+plugins {
+    id 'com.android.application'
 }
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
+android {
+    namespace 'com.pijatin.rumahaja.mitra'
+    compileSdk 34
+    defaultConfig {
+        applicationId "com.pijatin.rumahaja.mitra"
+        minSdk 21
+        targetSdk 34
+        versionCode 2
+        versionName "2.6.0"
     }
 }
